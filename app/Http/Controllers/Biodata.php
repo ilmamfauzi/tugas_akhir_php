@@ -101,5 +101,17 @@ class Biodata extends Controller
     }
 
     // baca
+    public function read()
+    {
+        $data = DB::table('tbl_biodata')->get();
+        if (count($data) > 0) {
+            $res['message'] = 'Success!';
+            $res['value'] = $data;
 
+            return response($res);
+        } else {
+            $res['message'] = 'Empty!';
+            return response($res);
+        }
+    }
 }

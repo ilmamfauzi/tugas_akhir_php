@@ -18,3 +18,4 @@ Route::get('/', function () {
 Route::post('/simpanData', 'Biodata@create');
 Route::get('/hapusData/{id}', 'Biodata@delete');
 Route::post('/updateData', 'Biodata@update');
+Route::get('/readData', 'Biodata@read');
