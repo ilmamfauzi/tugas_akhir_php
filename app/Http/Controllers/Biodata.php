@@ -40,7 +40,23 @@ class Biodata extends Controller
         }
     }
     // hapus
-
+    public function delete($id)
+    {
+        $data = DB::table('tbl_biodata')->where('id', $id)->get();
+        if (count($data) > 0) {
+            foreach ($data as $biodata) {
+                if (file_exists(public_path('data_file/' . $biodata->foto))) {
+                    @unlink(public_path('data_file/' . $biodata->foto));
+                    DB::table('tbl_biodata')->where('id', $id)->delete();
+                    $res['message'] = 'Berhasil!';
+                    return response($res);
+                }
+            }
+        } else {
+            $res['message'] = 'Data Not Found!';
+            return response($res);
+        }
+    }
     // ubah
 
     // baca
