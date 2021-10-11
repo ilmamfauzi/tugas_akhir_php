@@ -58,6 +58,48 @@ class Biodata extends Controller
         }
     }
     // ubah
+    public function update(Request $request)
+    {
+        if (!empty($request->foto)) {
+            $this->validate($request, [
+                'foto' => 'required|max:2048'
+            ]);
+
+            $file = $request->file('foto');
+
+            $nama_file = time() . '_' . $file->getClientOriginalName();
+            $tujuan_upload = 'data_file';
+
+            $file->move($tujuan_upload, $nama_file);
+
+            $data = DB::table('tbl_biodata')->where('id', $request->id)->get();
+            foreach ($data as $biodata) {
+                @unlink(public_path('data_file/' . $biodata->foto));
+                $ket = DB::table('tbl_biodata')->where('id', $request->id)->update([
+                    'nama' => $request->nama,
+                    'no_hp' => $request->no_hp,
+                    'alamat' => $request->alamat,
+                    'hobi' => $request->hobi,
+                    'foto' => $nama_file
+                ]);
+            }
+            $res['message'] = 'Berhasil!';
+            return response($res);
+        } else {
+            $data = DB::table('tbl_biodata')->where('id', $request->id)->get();
+            foreach ($data as $biodata) {
+                $ket = DB::table('tbl_biodata')->where('id', $request->id)->update([
+                    'nama' => $request->nama,
+                    'no_hp' => $request->no_hp,
+                    'alamat' => $request->alamat,
+                    'hobi' => $request->hobi
+                ]);
+            }
+            $res['message'] = 'Berhasil!';
+            return response($res);
+        }
+    }
 
     // baca
+
 }
